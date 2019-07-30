@@ -21,16 +21,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         determineCurrentTab(savedInstanceState)
-
-        setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        initNavigationBar()
     }
 
     private fun determineCurrentTab(savedInstanceState: Bundle?) {
         val id = savedInstanceState?.getInt(EXTRA_SELECTED_TAB)
-            ?: intent.getIntExtra(EXTRA_SELECTED_TAB, R.id.nav_services)
+            ?: intent.getIntExtra(EXTRA_SELECTED_TAB, R.id.navigation_list)
 
-        currentTab = BottomNavTab.fromId(id)
+        currentTab = BottomNavigationTab.fromId(id)
     }
 
     /**
@@ -38,7 +36,7 @@ class MainActivity : AppCompatActivity() {
      *
      * @param tab whichever tab has been selected and must be opened.
      */
-    private fun selectTab(tab: BottomNavTab) {
+    private fun selectTab(tab: BottomNavigationTab) {
         val fragment = supportFragmentManager.findFragmentByTag(tab.toString())
             ?: tab.newFragment()
         supportFragmentManager.beginTransaction()
@@ -47,13 +45,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    enum class BottomNavTab(@IdRes val id: Int, val newFragment: () -> Fragment) {
+    enum class BottomNavigationTab(@IdRes val id: Int, val newFragment: () -> Fragment) {
         SERVICES(R.id.navigation_plan, { PlanFragment() }),
         ACTIVITY(R.id.navigation_list, { ListFragment() }),
         SETTINGS(R.id.navigation_preferences, { PreferencesFragment() });
 
         companion object {
-            fun fromId(@IdRes id: Int): BottomNavTab {
+            fun fromId(@IdRes id: Int): BottomNavigationTab {
                 for (tab in values()) {
                     if (id == tab.id) {
                         return tab
@@ -67,9 +65,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_SELECTED_TAB = "extra:selected_tab"
-        private const val ACCESS_NETWORK_STATE_CODE = 3700
 
-        fun launch(activity: Activity, @IdRes tabIdRes: Int = R.id.nav_services) {
+        fun launch(activity: Activity, @IdRes tabIdRes: Int = R.id.navigation_list) {
             val intent = Intent(activity, MainActivity::class.java)
             intent.putExtra(EXTRA_SELECTED_TAB, tabIdRes)
             activity.startActivity(intent)
