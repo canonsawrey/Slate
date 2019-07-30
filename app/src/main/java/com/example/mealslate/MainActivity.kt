@@ -3,14 +3,13 @@ package com.example.mealslate
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.example.mealslate.list.ListFragment
 import com.example.mealslate.plan.PlanFragment
 import com.example.mealslate.preferences.PreferencesFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +20,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         determineCurrentTab(savedInstanceState)
+        setContentView(R.layout.activity_main)
         initNavigationBar()
+    }
+
+    /**
+     * Configures the bottom navigation bar listener to open the correct screen based on which
+     * BottomNavTab is selected.
+     */
+    private fun initNavigationBar() {
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            val tab = BottomNavigationTab.fromId(item.itemId)
+            selectTab(tab)
+            true
+        }
+
+        bottomNavigation.selectedItemId = currentTab?.id ?: R.id.navigation_list
     }
 
     private fun determineCurrentTab(savedInstanceState: Bundle?) {
