@@ -58,6 +58,13 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        val bundle = outState.apply {
+            putInt(EXTRA_SELECTED_TAB, bottomNavigation.selectedItemId)
+        }
+        super.onSaveInstanceState(bundle)
+    }
+
 
     enum class BottomNavigationTab(@IdRes val id: Int, val newFragment: () -> Fragment) {
         SERVICES(R.id.navigation_plan, { PlanFragment() }),
