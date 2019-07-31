@@ -19,6 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:elevation="4dp"
-            app:itemBackground="@color/colorAccent"
+            app:itemBackground="@drawable/menu_bar_background"
             app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>

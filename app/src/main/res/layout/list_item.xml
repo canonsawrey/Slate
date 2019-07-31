@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/root"
         android:layout_width="match_parent"
-       android:layout_height="50dp"
+       android:layout_height="wrap_content"
        android:layout_marginStart="8dp"
        android:layout_marginTop="4dp"
        android:layout_marginEnd="8dp"
@@ -33,7 +33,8 @@
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Shopping List Item" />
+                    tools:text="Shopping List Item"
+                    android:layout_margin="@dimen/list_item_text_margin"/>
 
             <TextView
                     android:id="@+id/listItemQuantity"
@@ -42,7 +43,8 @@
                     android:gravity="center_vertical"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textColor="?android:textColorSecondary"
-                    tools:text="X units" />
+                    android:layout_margin="@dimen/list_item_text_margin"
+                    tools:text="" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

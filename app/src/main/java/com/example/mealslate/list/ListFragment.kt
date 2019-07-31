@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.transition.TransitionManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.widget.Toast
 //import com.uber.autodispose.autoDisposable
 import com.jakewharton.rxrelay2.PublishRelay
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mealslate.R
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -96,7 +98,8 @@ class ListFragment : Fragment(), Consumer<State> {
         //TODO: implement a empty message
     }
     private fun listScreen() {
-        //TODO: implement a list view
+        //TransitionManager....
+        list_recycler.isVisible = true
     }
 
     private fun setUpRecyclerView() {
@@ -109,35 +112,5 @@ class ListFragment : Fragment(), Consumer<State> {
         super.onDestroy()
         disp.dispose()
         println("Observable has been disposed")
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment ListFragment.
-         */
-        @JvmStatic
-        fun newInstance() =
-            ListFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
     }
 }
