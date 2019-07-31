@@ -21,7 +21,12 @@ class ListViewModel: ViewModel() {
     }
 
     private fun getList(): Observable<State> {
-        val listOfListItems = listOf(ListItem("Carrot"), ListItem("Chicken"))
+        val listOfListItems = listOf(
+            ListItem("Carrot", null, null),
+            ListItem("Chicken", null, null),
+            ListItem("Pasta", 5.0, "boxes"),
+            ListItem("Eggs", 3.0, "dozen")
+        )
         val listSingle = Observable.just(listOfListItems)
         return listSingle
 //            .map { list -> list.map(this::mapToListItem)
