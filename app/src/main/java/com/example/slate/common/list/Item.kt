@@ -1,4 +1,4 @@
-package com.example.mealslate.common.list
+package com.example.slate.common.list
 
 import androidx.annotation.LayoutRes
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MealSlate</string>
+    <string name="app_name">Slate</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -9,4 +9,13 @@
     <string name="plan">Plan</string>
     <string name="my_list">My List</string>
     <string name="preferences">Preferences</string>
+    <string name="empty_list_warning">List is empty!</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_item">Add Item</string>
+    <string name="blank"/>
+    <string name="item">Item</string>
+    <string name="quantity">Quantity</string>
+    <string name="quantity_optional">Quantity (optional)</string>
+    <string name="unit_optional">Unit (optional)</string>
+    <string name="add_to_favorites">Add To Favorites</string>
 </resources>

@@ -1,11 +1,8 @@
-package com.example.mealslate.list
+package com.example.slate.list
 
-import android.view.View
-import androidx.core.util.Pair
-import com.bumptech.glide.Glide
-import com.example.mealslate.R
-import com.example.mealslate.common.list.BaseViewHolder
-import com.example.mealslate.common.list.Item
+import com.example.slate.R
+import com.example.slate.common.list.BaseViewHolder
+import com.example.slate.common.list.Item
 import kotlinx.android.synthetic.main.list_item.view.*
 
 data class ListItem(val name: String,
@@ -28,7 +25,7 @@ data class ListItem(val name: String,
             holder.itemView.listItemQuantity.text = str
         } else {
 
-            holder.itemView.listItemQuantity.text = ""
+            holder.itemView.listItemQuantity.text = "-"
         }
 //        val sharedTransitionIds = Pair.create(
 //            holder.itemView.root as View,

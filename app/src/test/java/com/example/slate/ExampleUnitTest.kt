@@ -1,4 +1,4 @@
-package com.example.mealslate
+package com.example.slate
 
 import org.junit.Test
 

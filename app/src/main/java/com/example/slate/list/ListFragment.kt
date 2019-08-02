@@ -1,10 +1,9 @@
-package com.example.mealslate.list
+package com.example.slate.list
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.net.Uri
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
-import android.transition.TransitionManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +15,20 @@ import com.jakewharton.rxrelay2.PublishRelay
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mealslate.R
+import androidx.room.Room
+import com.example.slate.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.functions.Consumer
 import java.io.FileNotFoundException
-import com.example.mealslate.common.list.BaseAdapter
+import com.example.slate.common.list.BaseAdapter
+import com.example.slate.data.AppDatabase
+import com.example.slate.data.DatabaseListItem
+import com.example.slate.list.add.AddListItemActivity
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
+import java.lang.IllegalArgumentException
+import java.sql.Array
 
 class ListFragment : Fragment(), Consumer<State> {
 
@@ -31,11 +36,14 @@ class ListFragment : Fragment(), Consumer<State> {
     private val actions = PublishRelay.create<Action>()
     private val adapter = BaseAdapter<ListItem>()
     private val disp = CompositeDisposable()
+    private val NEW_ITEM = 1000
 
     @SuppressLint("AutoDispose")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         initViewModel()
+
         val obs = actions.compose(viewModel.model())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -53,12 +61,12 @@ class ListFragment : Fragment(), Consumer<State> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
-        //setUpButtons()
+        setUpButtons()
         actions.accept(Action.RetrieveList)
     }
 
     private fun initViewModel() {
-        viewModel = ListViewModel()
+        viewModel = ListViewModel(activity!!.application)
         viewModel.onListItemClick = { item, headerInfo ->
             val clickEnabled = true
             if (clickEnabled) {
@@ -86,20 +94,40 @@ class ListFragment : Fragment(), Consumer<State> {
             }
 
             is State.ListFailure -> {
-                throw FileNotFoundException("Files could not be accessed. Error retrieving list.")
+            }
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            if (requestCode == NEW_ITEM) {
+                actions.accept(Action.AddItem(mapStringArrayToItem(data!!.getStringArrayExtra("item")!!)))
             }
         }
     }
 
     private fun loadingScreen() {
-        //TODO: implement a loading animation
+        list_recycler.isVisible = false
+        shimmer.isVisible = true
+        add_button.isVisible = false
+        empty_text.isVisible = false
     }
+
     private fun emptyScreen() {
-        //TODO: implement a empty message
+        list_recycler.isVisible = false
+        shimmer.isVisible = false
+        add_button.isVisible = true
+        empty_text.isVisible = true
     }
+
     private fun listScreen() {
         //TransitionManager....
         list_recycler.isVisible = true
+        shimmer.isVisible = false
+        add_button.isVisible = true
+        empty_text.isVisible = false
     }
 
     private fun setUpRecyclerView() {
@@ -108,9 +136,24 @@ class ListFragment : Fragment(), Consumer<State> {
         list_recycler.itemAnimator = null
     }
 
+    private fun setUpButtons() {
+        add_button.setOnClickListener {
+            startActivityForResult(Intent(requireActivity(), AddListItemActivity::class.java), NEW_ITEM)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         disp.dispose()
         println("Observable has been disposed")
+    }
+
+    private fun mapStringArrayToItem(strings: kotlin.Array<String>): ListItem {
+        return when (strings.size) {
+            1 -> ListItem(strings[0], null, null)
+            2 -> ListItem(strings[0], strings[1].toDouble(), null)
+            3 -> ListItem(strings[0], strings[1].toDouble(), strings[2])
+            else -> throw IllegalArgumentException("Array must be of size 1, 2, or 3")
+        }
     }
 }

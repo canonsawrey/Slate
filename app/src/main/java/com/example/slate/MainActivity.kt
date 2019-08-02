@@ -1,4 +1,4 @@
-package com.example.mealslate
+package com.example.slate
 
 import android.app.Activity
 import android.content.Intent
@@ -6,9 +6,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
-import com.example.mealslate.list.ListFragment
-import com.example.mealslate.plan.PlanFragment
-import com.example.mealslate.preferences.PreferencesFragment
+import androidx.room.Room
+import com.example.slate.data.AppDatabase
+import com.example.slate.data.DatabaseListItem
+import com.example.slate.list.ListFragment
+import com.example.slate.plan.PlanFragment
+import com.example.slate.preferences.PreferencesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

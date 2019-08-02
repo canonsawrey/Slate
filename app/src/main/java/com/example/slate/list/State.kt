@@ -1,4 +1,4 @@
-package com.example.mealslate.list
+package com.example.slate.list
 
 sealed class State {
     object Loading : State()

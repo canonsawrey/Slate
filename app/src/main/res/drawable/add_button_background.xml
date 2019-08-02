@@ -1,0 +1,21 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+               android:shape="rectangle" >
+            <size android:height="@dimen/add_button_size"
+                  android:width="@dimen/add_button_size"/>
+            <gradient
+                    android:startColor="@color/colorPrimary"
+                    android:endColor="@color/colorPrimary"
+                    android:angle="315"/>
+            <corners
+                    android:radius="8dp"/>
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/ic_add_white"
+          android:top="8dp"
+          android:bottom="8dp"
+          android:left="8dp"
+          android:right="8dp"/>
+</layer-list>
