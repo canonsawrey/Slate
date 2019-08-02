@@ -14,6 +14,9 @@ import android.widget.Toast
 import com.jakewharton.rxrelay2.PublishRelay
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.slate.R
@@ -29,16 +32,18 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
 import java.lang.IllegalArgumentException
 import java.sql.Array
+import javax.inject.Inject
 
 class ListFragment : Fragment(), Consumer<State> {
-
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: ListViewModel
     private val actions = PublishRelay.create<Action>()
     private val adapter = BaseAdapter<ListItem>()
+
     private val disp = CompositeDisposable()
     private val NEW_ITEM = 1000
 
-    @SuppressLint("AutoDispose")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -66,7 +71,7 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun initViewModel() {
-        viewModel = ListViewModel(activity!!.application)
+        viewModel = ViewModelProviders.of(this, factory)[ListViewModel::class.java]
         viewModel.onListItemClick = { item, headerInfo ->
             val clickEnabled = true
             if (clickEnabled) {
@@ -123,7 +128,6 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun listScreen() {
-        //TransitionManager....
         list_recycler.isVisible = true
         shimmer.isVisible = false
         add_button.isVisible = true

@@ -9,7 +9,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".list.add.AddListItemActivity">
+        <activity android:name=".list.add.AddListItemActivity"
+                  android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         <activity
                 android:name=".MainActivity"

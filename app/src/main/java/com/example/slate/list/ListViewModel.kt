@@ -13,7 +13,7 @@ import com.example.slate.data.DatabaseListItem
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 
-class ListViewModel(val app: Application): AndroidViewModel(app) {
+class ListViewModel: ViewModel() {
 
     var onListItemClick: ((ListItem, Pair<View, String>) -> Unit)? = null
     private var list = mutableListOf<ListItem>()

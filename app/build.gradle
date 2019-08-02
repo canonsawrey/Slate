@@ -47,4 +47,10 @@ dependencies {
     compile 'android.arch.persistence.room:runtime:1.1.1'
     compile 'android.arch.persistence.room:rxjava2:1.1.1'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
+    compile 'com.google.dagger:dagger:2.23.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.23.2'
+    compile 'com.google.dagger:dagger-android:2.23.2'
+    compile 'com.google.dagger:dagger-android-support:2.23.2' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.2'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 }
