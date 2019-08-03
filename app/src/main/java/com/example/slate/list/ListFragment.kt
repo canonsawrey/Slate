@@ -35,8 +35,8 @@ import java.sql.Array
 import javax.inject.Inject
 
 class ListFragment : Fragment(), Consumer<State> {
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
+//    @Inject
+//    lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: ListViewModel
     private val actions = PublishRelay.create<Action>()
     private val adapter = BaseAdapter<ListItem>()
@@ -71,7 +71,8 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, factory)[ListViewModel::class.java]
+        //viewModel = ViewModelProviders.of(this, factory)[ListViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[ListViewModel::class.java]
         viewModel.onListItemClick = { item, headerInfo ->
             val clickEnabled = true
             if (clickEnabled) {
