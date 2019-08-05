@@ -25,6 +25,7 @@ class ListViewModel: ViewModel() {
                     is Action.RetrieveList -> getList()
                     is Action.AddItem -> {
                         list.add(action.item)
+                        println("List is " +list.size.toString() + " long")
                         getList()
                     }
                 }

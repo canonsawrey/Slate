@@ -129,6 +129,7 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun listScreen() {
+        println("Showing list screen")
         list_recycler.isVisible = true
         shimmer.isVisible = false
         add_button.isVisible = true
