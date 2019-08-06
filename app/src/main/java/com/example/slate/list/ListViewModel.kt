@@ -1,22 +1,23 @@
 package com.example.slate.list
 
+
+import android.app.Activity
 import android.app.Application
-import android.provider.ContactsContract
 import android.view.View
 import androidx.core.util.Pair
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.room.Room
-import androidx.room.RoomDatabase
+import com.example.slate.Util
 import com.example.slate.data.AppDatabase
-import com.example.slate.data.DatabaseListItem
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 
-class ListViewModel: ViewModel() {
+class ListViewModel(app: Application): AndroidViewModel(app) {
 
     var onListItemClick: ((ListItem, Pair<View, String>) -> Unit)? = null
     private var list = mutableListOf<ListItem>()
+    private val db = AppDatabase.getInstance(app.applicationContext)
 
     fun model(): ObservableTransformer<Action, State> {
         return ObservableTransformer { upstream ->
@@ -25,7 +26,7 @@ class ListViewModel: ViewModel() {
                     is Action.RetrieveList -> getList()
                     is Action.AddItem -> {
                         list.add(action.item)
-                        println("List is " +list.size.toString() + " long")
+                        db?.itemDao()?.insert(Util.listItemToDatabaseListItem(action.item))
                         getList()
                     }
                 }

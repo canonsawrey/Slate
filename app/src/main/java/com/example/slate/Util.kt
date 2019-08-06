@@ -1,6 +1,8 @@
 package com.example.slate
 
 import android.view.View
+import com.example.slate.data.DatabaseListItem
+import com.example.slate.list.ListItem
 import java.lang.IllegalArgumentException
 
 object Util {
@@ -17,5 +19,12 @@ object Util {
         button.isEnabled = false
         button.isClickable = false
         button.alpha = 0.5.toFloat()
+    }
+
+    @JvmStatic
+    fun listItemToDatabaseListItem(listItem: ListItem): DatabaseListItem {
+        return DatabaseListItem(
+
+        )
     }
 }
