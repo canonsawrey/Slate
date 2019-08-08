@@ -21,10 +21,15 @@ object Util {
         button.alpha = 0.5.toFloat()
     }
 
+
+
     @JvmStatic
     fun listItemToDatabaseListItem(listItem: ListItem): DatabaseListItem {
         return DatabaseListItem(
-
+            0,
+            listItem.name,
+            listItem.quantity,
+            listItem.quantityUnit
         )
     }
 }

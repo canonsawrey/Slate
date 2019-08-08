@@ -1,5 +1,6 @@
 package com.example.slate.list
 
+import android.view.View
 import com.example.slate.R
 import com.example.slate.common.list.BaseViewHolder
 import com.example.slate.common.list.Item
@@ -12,7 +13,7 @@ data class ListItem(val name: String,
     override fun layoutId(): Int = R.layout.list_item
 
     override fun uniqueId(): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return this.hashCode().toLong()
     }
 
     override fun bind(holder: BaseViewHolder) {
@@ -31,6 +32,8 @@ data class ListItem(val name: String,
 //            holder.itemView.root as View,
 //            "serviceDetailsContent"
 //        )
-        //holder.itemView.setOnClickListener { onItemClick?.invoke(this, sharedTransitionIds) }
+        holder.itemView.setOnClickListener {
+            println(holder.itemView.context.toString())
+        }
     }
 }

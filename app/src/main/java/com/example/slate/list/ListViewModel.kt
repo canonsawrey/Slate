@@ -10,8 +10,12 @@ import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import com.example.slate.Util
 import com.example.slate.data.AppDatabase
+import com.example.slate.data.DatabaseListItem
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 
 class ListViewModel(app: Application): AndroidViewModel(app) {
 
@@ -24,36 +28,28 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
             upstream.flatMap { action ->
                 when (action) {
                     is Action.RetrieveList -> getList()
-                    is Action.AddItem -> {
-                        list.add(action.item)
-                        db?.itemDao()?.insert(Util.listItemToDatabaseListItem(action.item))
-                        getList()
-                    }
+                    is Action.AddItem -> addToList(action.item)
                 }
             }
         }
     }
 
-    private fun getList(): Observable<State> {
-        val listSingle = Observable.just(list)
-        return listSingle
-//            .map { list -> list.map(this::mapToListItem)
-//            }
-            .map<State> { list ->
-                if (list.isEmpty()) {
-                    State.ListEmpty
-                } else {
-                    State.ListRetrieved(list)
-                }
-            }
-            .onErrorReturn(State::ListFailure)
-            .startWith(State.Loading)
+    private fun addToList(item: ListItem): Observable<State> {
+        list.add(item)
+        val comp = Completable.fromAction {db.itemDao().insert(Util.listItemToDatabaseListItem(item)) }
+            .subscribeOn(Schedulers.io())
+        return comp.andThen(getList())
     }
 
-//        val db = Room.databaseBuilder(getApplication(), AppDatabase::class.java, "list.db").build()
-//
-//        return db.itemDao().getAllItems()
-//            .map { list -> list.map(this::mapToListItem) }
+    private fun getList(): Observable<State> {
+
+
+
+//    {
+//        val listSingle = Observable.just(list)
+//        return listSingle
+////            .map { list -> list.map(this::mapToListItem)
+////            }
 //            .map<State> { list ->
 //                if (list.isEmpty()) {
 //                    State.ListEmpty
@@ -62,15 +58,30 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
 //                }
 //            }
 //            .onErrorReturn(State::ListFailure)
-//            .toObservable()
 //            .startWith(State.Loading)
 //    }
-//
-//    private fun mapToListItem(dbItem: DatabaseListItem): ListItem {
-//        return ListItem(
-//            dbItem.name,
-//            dbItem.quantity,
-//            dbItem.quantityUnit
-//        )
-//    }
+
+
+        return db.itemDao().getAllItems()
+            .map { list -> list.map(this::mapToListItem) }
+            .map<State> { list ->
+                if (list.isEmpty()) {
+                    State.ListEmpty
+                } else {
+                    State.ListRetrieved(list)
+                }
+            }
+            .subscribeOn(Schedulers.io())
+            .onErrorReturn(State::ListFailure)
+            .toObservable()
+            .startWith(State.Loading)
+    }
+
+    private fun mapToListItem(dbItem: DatabaseListItem): ListItem {
+        return ListItem(
+            dbItem.name,
+            dbItem.quantity,
+            dbItem.quantityUnit
+        )
+    }
 }
