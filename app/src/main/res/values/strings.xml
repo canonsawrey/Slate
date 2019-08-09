@@ -18,4 +18,7 @@
     <string name="quantity_optional">Quantity (optional)</string>
     <string name="unit_optional">Unit (optional)</string>
     <string name="add_to_favorites">Add To Favorites</string>
+    <string name="change_dates">Changes dates ></string>
+    <string name="formatted_selected_date">Planning through %s\n%s %d, %d</string>
+
 </resources>

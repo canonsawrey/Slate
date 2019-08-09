@@ -1,6 +1,6 @@
 package com.example.slate.list
 
-import android.view.View
+import com.example.slate.MainActivity
 import com.example.slate.R
 import com.example.slate.common.list.BaseViewHolder
 import com.example.slate.common.list.Item
@@ -28,12 +28,9 @@ data class ListItem(val name: String,
 
             holder.itemView.listItemQuantity.text = "-"
         }
-//        val sharedTransitionIds = Pair.create(
-//            holder.itemView.root as View,
-//            "serviceDetailsContent"
-//        )
+
         holder.itemView.setOnClickListener {
-            println(holder.itemView.context.toString())
+            (holder.itemView.context as MainActivity).itemClicked(this.uniqueId())
         }
     }
 }

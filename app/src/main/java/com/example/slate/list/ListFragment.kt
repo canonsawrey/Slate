@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.example.slate.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -40,9 +42,7 @@ class ListFragment : Fragment(), Consumer<State> {
     private lateinit var viewModel: ListViewModel
     private val actions = PublishRelay.create<Action>()
     private val adapter = BaseAdapter<ListItem>()
-
     private val disp = CompositeDisposable()
-    private val NEW_ITEM = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +67,7 @@ class ListFragment : Fragment(), Consumer<State> {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setUpButtons()
+        startScreen()
         actions.accept(Action.RetrieveList)
     }
 
@@ -76,8 +77,8 @@ class ListFragment : Fragment(), Consumer<State> {
         viewModel.onListItemClick = { item, headerInfo ->
             val clickEnabled = true
             if (clickEnabled) {
-                val options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(requireActivity(), headerInfo)
+//                val options = ActivityOptionsCompat
+//                    .makeSceneTransitionAnimation(requireActivity(), headerInfo)
                 //ListItemDetail.launch(this, item, options.toBundle())
                 Toast.makeText(activity, "Item clicked", Toast.LENGTH_SHORT).show()
             }
@@ -94,7 +95,6 @@ class ListFragment : Fragment(), Consumer<State> {
             }
 
             is State.ListRetrieved -> {
-                println("List retrieved, state accepted")
                 adapter.submitList(state.items)
                 listScreen()
             }
@@ -114,6 +114,13 @@ class ListFragment : Fragment(), Consumer<State> {
         }
     }
 
+    private fun startScreen() {
+        list_recycler.isVisible = false
+        shimmer.isVisible = true
+        add_button.isVisible = false
+        empty_text.isVisible = false
+    }
+
     private fun loadingScreen() {
         list_recycler.isVisible = false
         shimmer.isVisible = true
@@ -129,7 +136,6 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun listScreen() {
-        println("Showing list screen")
         list_recycler.isVisible = true
         shimmer.isVisible = false
         add_button.isVisible = true
@@ -151,7 +157,6 @@ class ListFragment : Fragment(), Consumer<State> {
     override fun onDestroy() {
         super.onDestroy()
         disp.dispose()
-        println("Observable has been disposed")
     }
 
     private fun mapStringArrayToItem(strings: kotlin.Array<String>): ListItem {
@@ -162,4 +167,9 @@ class ListFragment : Fragment(), Consumer<State> {
             else -> throw IllegalArgumentException("Array must be of size 1, 2, or 3")
         }
     }
+
+    companion object {
+        const val NEW_ITEM = 1000
+    }
+
 }

@@ -68,6 +68,10 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(bundle)
     }
 
+    fun itemClicked(uniqueId: Long) {
+        println(uniqueId)
+    }
+
 
     enum class BottomNavigationTab(@IdRes val id: Int, val newFragment: () -> Fragment) {
         SERVICES(R.id.navigation_plan, { PlanFragment() }),

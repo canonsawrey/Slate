@@ -42,29 +42,9 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
     }
 
     private fun getList(): Observable<State> {
-
-
-
-//    {
-//        val listSingle = Observable.just(list)
-//        return listSingle
-////            .map { list -> list.map(this::mapToListItem)
-////            }
-//            .map<State> { list ->
-//                if (list.isEmpty()) {
-//                    State.ListEmpty
-//                } else {
-//                    State.ListRetrieved(list)
-//                }
-//            }
-//            .onErrorReturn(State::ListFailure)
-//            .startWith(State.Loading)
-//    }
-
-
         return db.itemDao().getAllItems()
             .map { list -> list.map(this::mapToListItem) }
-            .map<State> { list ->
+            .map { list ->
                 if (list.isEmpty()) {
                     State.ListEmpty
                 } else {

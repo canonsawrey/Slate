@@ -32,4 +32,36 @@ object Util {
             listItem.quantityUnit
         )
     }
+
+    fun mapToMonthString(month: Int): String {
+        return when (month) {
+            1 -> "January"
+            2 -> "February"
+            3 -> "March"
+            4 -> "April"
+            5 -> "May"
+            6 -> "June"
+            7 -> "July"
+            8 -> "August"
+            9 -> "September"
+            10 -> "October"
+            11 -> "November"
+            12 -> "December"
+            else -> throw IllegalArgumentException("Only months 1 -> 12 supported/exist")
+        }
+
+    }
+
+    fun mapToDayString(day: Int): String {
+        return when (day) {
+            0 -> "Sunday"
+            1 -> "Monday"
+            2 -> "Tuesday"
+            3 -> "Wednesday"
+            4 -> "Thursday"
+            5 -> "Friday"
+            6 -> "Saturday"
+            else -> throw IllegalArgumentException("Only days 0 -> 6 supported/exist")
+        }
+    }
 }
