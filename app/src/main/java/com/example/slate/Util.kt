@@ -7,6 +7,8 @@ import java.lang.IllegalArgumentException
 
 object Util {
 
+    const val PREFERENCES_FILE = "slate_preferences"
+
     @JvmStatic
     fun enableButton(button: View) {
         button.isEnabled = true

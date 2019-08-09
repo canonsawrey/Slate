@@ -5,10 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.slate.MainActivity
+import com.example.slate.main.MainActivity
 import com.example.slate.R
 import kotlinx.android.synthetic.main.activity_add_list_item.*
-import kotlinx.android.synthetic.main.list_item.*
 
 class AddListItemActivity : AppCompatActivity(), View.OnClickListener {
 

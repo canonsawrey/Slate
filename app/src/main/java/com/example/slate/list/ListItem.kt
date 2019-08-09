@@ -1,6 +1,6 @@
 package com.example.slate.list
 
-import com.example.slate.MainActivity
+import com.example.slate.main.MainActivity
 import com.example.slate.R
 import com.example.slate.common.list.BaseViewHolder
 import com.example.slate.common.list.Item

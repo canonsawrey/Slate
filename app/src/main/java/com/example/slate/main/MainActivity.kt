@@ -1,14 +1,14 @@
-package com.example.slate
+package com.example.slate.main
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.annotation.IdRes
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import androidx.room.Room
-import com.example.slate.data.AppDatabase
-import com.example.slate.data.DatabaseListItem
+import com.example.slate.R
 import com.example.slate.list.ListFragment
 import com.example.slate.plan.PlanFragment
 import com.example.slate.preferences.PreferencesFragment
@@ -43,7 +43,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun determineCurrentTab(savedInstanceState: Bundle?) {
         val id = savedInstanceState?.getInt(EXTRA_SELECTED_TAB)
-            ?: intent.getIntExtra(EXTRA_SELECTED_TAB, R.id.navigation_list)
+            ?: intent.getIntExtra(
+                EXTRA_SELECTED_TAB,
+                R.id.navigation_list
+            )
 
         currentTab = BottomNavigationTab.fromId(id)
     }
@@ -101,11 +104,12 @@ class MainActivity : AppCompatActivity() {
             activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         }
 
-        fun launch(activity: Activity) {
+        fun launch(activity: Activity, context: Context) {
+            val bundle = ActivityOptionsCompat.makeCustomAnimation(context,
+                android.R.anim.fade_in, android.R.anim.fade_out).toBundle()
             val intent = Intent(activity, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            activity.startActivity(intent)
-            activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            activity.startActivity(intent, bundle)
+            activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
