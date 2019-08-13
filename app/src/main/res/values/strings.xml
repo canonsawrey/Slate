@@ -20,5 +20,8 @@
     <string name="add_to_favorites">Add To Favorites</string>
     <string name="change_dates">Changes dates ></string>
     <string name="formatted_selected_date">Planning through %s\n%s %d, %d</string>
+    <string name="twenty_spaces"/>
+    <string name="loading">Loading............</string>
+    <string name="add_item_from_favorites">Add Item From Favorites</string>
 
 </resources>

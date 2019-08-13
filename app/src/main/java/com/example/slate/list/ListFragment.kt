@@ -1,5 +1,6 @@
 package com.example.slate.list
 
+import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -104,7 +105,6 @@ class ListFragment : Fragment(), Consumer<State> {
         }
     }
 
-    @SuppressLint("CheckResult")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -129,6 +129,7 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun emptyScreen() {
+        TransitionManager.beginDelayedTransition(container, Fade(Fade.OUT))
         list_recycler.isVisible = false
         shimmer.isVisible = false
         add_button.isVisible = true
@@ -136,8 +137,10 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun listScreen() {
-        list_recycler.isVisible = true
+        TransitionManager.beginDelayedTransition(container, Fade(Fade.OUT))
+        shimmer.stopShimmer()
         shimmer.isVisible = false
+        list_recycler.isVisible = true
         add_button.isVisible = true
         empty_text.isVisible = false
     }

@@ -19,7 +19,8 @@
         </activity>
         <activity
                 android:name=".list.add.AddListItemActivity"
-                android:windowSoftInputMode="stateVisible|adjustResize">
+                android:windowSoftInputMode="adjustResize"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".main.MainActivity"
