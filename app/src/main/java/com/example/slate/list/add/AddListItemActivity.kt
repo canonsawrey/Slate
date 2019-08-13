@@ -7,9 +7,15 @@ import android.os.Bundle
 import android.view.View
 import com.example.slate.main.MainActivity
 import com.example.slate.R
+import com.example.slate.Util
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_add_list_item.*
 
 class AddListItemActivity : AppCompatActivity(), View.OnClickListener {
+
+    private var disp = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +23,34 @@ class AddListItemActivity : AppCompatActivity(), View.OnClickListener {
 
         cancel_button.setOnClickListener(this)
         add_item_button.setOnClickListener(this)
+
+        setupEditTextReaction()
+    }
+
+    private fun setupEditTextReaction() {
+        //Set up text edit observable
+        disp.add(
+            RxTextView.textChanges(item_name_text)
+            .map{it.length}
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                    t: Int -> if (t > 0) Util.enableView(add_item_button) else Util.disableView(add_item_button)
+            }
+        )
+
+        disp.add(
+            RxTextView.textChanges(quantity_text)
+                .map{it.length}
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                        t: Int -> if (t > 0) Util.enableView(quantity_unit_text) else {
+                    Util.disableView(quantity_unit_text)
+                    quantity_unit_text.text.clear()
+                }
+                }
+        )
     }
 
 
@@ -55,5 +89,10 @@ class AddListItemActivity : AppCompatActivity(), View.OnClickListener {
         intent.putExtra("item", strings)
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disp.dispose()
     }
 }

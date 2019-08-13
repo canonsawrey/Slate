@@ -1,8 +1,13 @@
 package com.example.slate
 
 import android.view.View
+import android.widget.TextView
 import com.example.slate.data.DatabaseListItem
 import com.example.slate.list.ListItem
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.activity_add_list_item.*
 import java.lang.IllegalArgumentException
 
 object Util {
@@ -10,20 +15,18 @@ object Util {
     const val PREFERENCES_FILE = "slate_preferences"
 
     @JvmStatic
-    fun enableButton(button: View) {
-        button.isEnabled = true
-        button.isClickable = true
-        button.alpha = 1.toFloat()
+    fun enableView(view: View) {
+        view.isEnabled = true
+        view.isClickable = true
+        view.alpha = 1.toFloat()
     }
 
     @JvmStatic
-    fun disableButton(button: View) {
-        button.isEnabled = false
-        button.isClickable = false
-        button.alpha = 0.5.toFloat()
+    fun disableView(view: View) {
+        view.isEnabled = false
+        view.isClickable = false
+        view.alpha = 0.5.toFloat()
     }
-
-
 
     @JvmStatic
     fun listItemToDatabaseListItem(listItem: ListItem): DatabaseListItem {
@@ -35,6 +38,7 @@ object Util {
         )
     }
 
+    @JvmStatic
     fun mapToMonthString(month: Int): String {
         return when (month) {
             1 -> "January"
@@ -53,7 +57,7 @@ object Util {
         }
 
     }
-
+    @JvmStatic
     fun mapToDayString(day: Int): String {
         return when (day) {
             0 -> "Sunday"
