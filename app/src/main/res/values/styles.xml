@@ -31,5 +31,8 @@
     <style name="NeutralButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/neutral_button_background</item>
     </style>
+    <style name="AccentButton">
+        <item name="android:background">@drawable/accent_button_background</item>
+    </style>
 
 </resources>

@@ -102,8 +102,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.888"/>
         <Button
-
-                style="@style/NeutralButton"
+                style="@style/AccentButton"
                 android:text="@string/add_item_from_favorites"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
