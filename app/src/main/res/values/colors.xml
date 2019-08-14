@@ -8,6 +8,7 @@
     <color name="black">#000000</color>
     <color name="colorPrimaryVeryLight">#B9B9DC</color>
     <color name="grey">#d3d3d3</color>
+    <color name="colorRed">#FF0000</color>
 
     <!--<color name="colorPrimaryBright">#96c0ce</color>-->
     <!--<color name="colorPrimaryDull">#beb9b5</color>-->

@@ -1,4 +1,4 @@
-package com.example.slate
+package com.example.slate.util
 
 import android.view.View
 import android.widget.TextView
@@ -34,7 +34,8 @@ object Util {
             0,
             listItem.name,
             listItem.quantity,
-            listItem.quantityUnit
+            listItem.quantityUnit,
+            listItem.created.toEpochSecond()
         )
     }
 
@@ -55,7 +56,6 @@ object Util {
             12 -> "December"
             else -> throw IllegalArgumentException("Only months 1 -> 12 supported/exist")
         }
-
     }
     @JvmStatic
     fun mapToDayString(day: Int): String {

@@ -5,7 +5,7 @@ import com.example.slate.R
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.example.slate.main.MainActivity
-import com.example.slate.Util
+import com.example.slate.util.Util
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
@@ -26,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun nextStep() {
-        disp.add(Observable.timer(4000, TimeUnit.MILLISECONDS).subscribe {
+        disp.add(Observable.timer(2000, TimeUnit.MILLISECONDS).subscribe {
             MainActivity.launch(this, applicationContext)
         })
     }

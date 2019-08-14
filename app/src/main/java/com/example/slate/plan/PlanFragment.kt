@@ -1,10 +1,7 @@
 package com.example.slate.plan
 
 
-import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.core.view.isVisible
 import com.example.slate.R
-import com.example.slate.Util
+import com.example.slate.util.Util
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

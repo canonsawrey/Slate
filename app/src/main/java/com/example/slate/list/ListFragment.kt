@@ -31,10 +31,13 @@ import com.example.slate.common.list.BaseAdapter
 import com.example.slate.data.AppDatabase
 import com.example.slate.data.DatabaseListItem
 import com.example.slate.list.add.AddListItemActivity
+import com.example.slate.util.truncateAfterSeconds
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_list.*
 import java.lang.IllegalArgumentException
 import java.sql.Array
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class ListFragment : Fragment(), Consumer<State> {
@@ -73,17 +76,7 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun initViewModel() {
-        //viewModel = ViewModelProviders.of(this, factory)[ListViewModel::class.java]
         viewModel = ViewModelProviders.of(this)[ListViewModel::class.java]
-        viewModel.onListItemClick = { item, headerInfo ->
-            val clickEnabled = true
-            if (clickEnabled) {
-//                val options = ActivityOptionsCompat
-//                    .makeSceneTransitionAnimation(requireActivity(), headerInfo)
-                //ListItemDetail.launch(this, item, options.toBundle())
-                Toast.makeText(activity, "Item clicked", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     override fun accept(state: State?) {
@@ -96,11 +89,22 @@ class ListFragment : Fragment(), Consumer<State> {
             }
 
             is State.ListRetrieved -> {
+                addDeleteFunction(state.items)
                 adapter.submitList(state.items)
                 listScreen()
             }
 
             is State.ListFailure -> {
+            }
+        }
+    }
+
+    private fun addDeleteFunction(items: List<ListItem>) {
+        items.forEach {listItem ->
+            if (listItem.deleteFunction == null) {
+                listItem.deleteFunction = {
+                    println("Delete function called")
+                    actions.accept(Action.RemoveItem(listItem)) }
             }
         }
     }
@@ -163,11 +167,18 @@ class ListFragment : Fragment(), Consumer<State> {
     }
 
     private fun mapStringArrayToItem(strings: kotlin.Array<String>): ListItem {
+        val deleteFun: ((ListItem) -> Unit) = { actions.accept(Action.RemoveItem(it)) }
+
         return when (strings.size) {
-            1 -> ListItem(strings[0], null, null)
-            2 -> ListItem(strings[0], strings[1].toDouble(), null)
-            3 -> ListItem(strings[0], strings[1].toDouble(), strings[2])
-            else -> throw IllegalArgumentException("Array must be of size 1, 2, or 3")
+            1 -> ListItem(strings[0], null, null,
+                ZonedDateTime.now().truncateAfterSeconds(), deleteFun)
+
+            2 -> ListItem(strings[0], strings[1].toDouble(), null,
+                ZonedDateTime.now().truncateAfterSeconds(), deleteFun)
+
+            3 -> ListItem(strings[0], strings[1].toDouble(), strings[2],
+                ZonedDateTime.now().truncateAfterSeconds(), deleteFun)
+            else -> TODO("Implement this")
         }
     }
 

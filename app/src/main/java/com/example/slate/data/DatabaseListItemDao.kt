@@ -1,6 +1,7 @@
 package com.example.slate.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import io.reactivex.Completable
@@ -15,4 +16,7 @@ interface DatabaseListItemDao {
 
     @Insert
     fun insert(item: DatabaseListItem): Long
+
+    @Query("DELETE FROM DatabaseListItem WHERE item_name=:name")
+    fun remove(name: String)
 }

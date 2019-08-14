@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import com.example.slate.main.MainActivity
 import com.example.slate.R
-import com.example.slate.Util
+import com.example.slate.util.Util
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

@@ -32,12 +32,4 @@ class BaseAdapter<I : Item> : ListAdapter<I, BaseViewHolder>(
     override fun getItemId(position: Int): Long = getItem(position).uniqueId()
 
     override fun getItemViewType(position: Int): Int = getItem(position).layoutId()
-
-//    fun newSpanSizeLookup(): GridLayoutManager.SpanSizeLookup {
-//        return object : GridLayoutManager.SpanSizeLookup() {
-//            override fun getSpanSize(position: Int): Int {
-//                return getItem(position).spanSize()
-//            }
-//        }
-//    }
 }
