@@ -29,17 +29,6 @@ object Util {
     }
 
     @JvmStatic
-    fun listItemToDatabaseListItem(listItem: ListItem): DatabaseListItem {
-        return DatabaseListItem(
-            0,
-            listItem.name,
-            listItem.quantity,
-            listItem.quantityUnit,
-            listItem.created.toEpochSecond()
-        )
-    }
-
-    @JvmStatic
     fun mapToMonthString(month: Int): String {
         return when (month) {
             1 -> "January"

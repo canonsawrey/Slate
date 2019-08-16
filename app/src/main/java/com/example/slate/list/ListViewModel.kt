@@ -5,14 +5,12 @@ import android.app.Application
 import android.view.View
 import androidx.core.util.Pair
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.slate.util.Util
 import com.example.slate.data.AppDatabase
 import com.example.slate.data.DatabaseListItem
-import com.example.slate.util.exhaustive
-import com.example.slate.util.toBackportZonedDateTime
-import com.example.slate.util.toListItem
+import com.example.slate.util.*
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -23,29 +21,28 @@ class ListViewModel(app: Application): AndroidViewModel(app) {
 
     //var onListItemClick: ((ListItem, Pair<View, String>) -> Unit)? = null
     private val db = AppDatabase.getInstance(app.applicationContext)
-    private var items = MutableLiveData<MutableList<ListItem>>()
+    private val _items = MutableLiveData<List<ListItem>>()
+    val items : LiveData<List<ListItem>> = _items
 
-    private fun retrieveDatabaseItems() {
+    fun retrieveDatabaseItems() {
         viewModelScope.launch {
-            items.value = db.itemDao().getAllItems().map {
+            _items.value = db.itemDao().getAllItems().map {
                 it.toListItem()
             }.toMutableList()
         }
     }
 
-    fun addToList(item: ListItem): Boolean {
-        return items.value?.add(item) == null
+    fun addToList(item: ListItem) {
+        viewModelScope.launch {
+            db.itemDao().insert(item.toDatabaseListItem())
+            retrieveDatabaseItems()
+        }
     }
 
-    fun removeFromList(index: Int): Boolean {
-        return (items.value?.removeAt(index) != null)
-    }
-
-    private fun getList(): List<ListItem> {
-        return if (items.value == null) {
-            listOf()
-        } else {
-            items.value!!
+    fun removeFromList(name: String) {
+        viewModelScope.launch {
+            db.itemDao().remove(name)
+            retrieveDatabaseItems()
         }
     }
 }

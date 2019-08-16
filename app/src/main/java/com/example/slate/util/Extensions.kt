@@ -12,6 +12,16 @@ fun DatabaseListItem.toListItem(): ListItem {
         this.name,
         this.quantity,
         this.quantityUnit,
-        this.created.toBackportZonedDateTime()
+        this.created.toBackportZonedDateTime(),
+        null)
+}
+
+fun ListItem.toDatabaseListItem(): DatabaseListItem {
+    return DatabaseListItem(
+        0,
+        this.name,
+        this.quantity,
+        this.quantityUnit,
+        this.created.toEpochSecond()
     )
 }

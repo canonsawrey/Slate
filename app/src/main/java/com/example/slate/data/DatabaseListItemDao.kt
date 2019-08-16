@@ -11,7 +11,7 @@ import io.reactivex.Single
 @Dao
 interface DatabaseListItemDao {
     @Query("SELECT * FROM DatabaseListItem")
-    suspend fun getAllItems(): MutableList<DatabaseListItem>
+    suspend fun getAllItems(): List<DatabaseListItem>
 
     @Insert
     suspend fun insert(item: DatabaseListItem): Long

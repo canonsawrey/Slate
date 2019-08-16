@@ -13,7 +13,7 @@
             android:visibility="gone"
             android:layout_marginTop="4dp"
             tools:listitem="@layout/list_item"
-            android:background="@drawable/light_gradient_background"/>
+            android:background="@color/white"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
                                                        android:layout_height="match_parent">
@@ -40,6 +40,9 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+            <include layout="@layout/list_item_placeholder" />
+            <include layout="@layout/list_item_placeholder" />
+            <include layout="@layout/list_item_placeholder" />
             <include layout="@layout/list_item_placeholder" />
             <include layout="@layout/list_item_placeholder" />
             <include layout="@layout/list_item_placeholder" />

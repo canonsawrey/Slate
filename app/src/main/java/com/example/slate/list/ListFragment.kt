@@ -15,9 +15,11 @@ import android.widget.Toast
 import com.jakewharton.rxrelay2.PublishRelay
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import androidx.transition.Fade
@@ -40,7 +42,7 @@ import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-class ListFragment : Fragment(), Consumer<State> {
+class ListFragment : Fragment() {
 //    @Inject
 //    lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: ListViewModel
@@ -48,7 +50,6 @@ class ListFragment : Fragment(), Consumer<State> {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initViewModel()
     }
 
@@ -63,6 +64,29 @@ class ListFragment : Fragment(), Consumer<State> {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setUpButtons()
+        viewModel.retrieveDatabaseItems()
+        viewModel.items.observe(viewLifecycleOwner, Observer { updateUI(it) })
+    }
+
+    private fun updateUI(items: List<ListItem>?) {
+        when (items) {
+            null -> loadingScreen()
+            else -> {
+                if (items.isEmpty()) {
+                    emptyScreen()
+                } else {
+                    addRemoveFunction(items)
+                    adapter.submitList(items)
+                    listScreen()
+                }
+            }
+        }
+    }
+
+    private fun addRemoveFunction(items: List<ListItem>) {
+        items.forEach {
+            it.onRemoveClick = {name: String, index: Int -> removeListItem(name, index)}
+        }
     }
 
     private fun initViewModel() {
@@ -105,7 +129,7 @@ class ListFragment : Fragment(), Consumer<State> {
     private fun setUpRecyclerView() {
         list_recycler.layoutManager = LinearLayoutManager(requireContext())
         list_recycler.adapter = adapter
-        list_recycler.itemAnimator = null
+        list_recycler.itemAnimator = DefaultItemAnimator()
     }
 
     private fun setUpButtons() {
@@ -114,25 +138,24 @@ class ListFragment : Fragment(), Consumer<State> {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        disp.dispose()
-    }
-
     private fun mapStringArrayToItem(strings: kotlin.Array<String>): ListItem {
-        val deleteFun: ((ListItem) -> Unit) = { actions.accept(Action.RemoveItem(it)) }
+        val onRemoveClick = {name: String, index: Int -> removeListItem(name, index)}
 
         return when (strings.size) {
             1 -> ListItem(strings[0], null, null,
-                ZonedDateTime.now().truncateAfterSeconds(), deleteFun)
+                ZonedDateTime.now().truncateAfterSeconds(), onRemoveClick)
 
             2 -> ListItem(strings[0], strings[1].toDouble(), null,
-                ZonedDateTime.now().truncateAfterSeconds(), deleteFun)
+                ZonedDateTime.now().truncateAfterSeconds(), onRemoveClick)
 
             3 -> ListItem(strings[0], strings[1].toDouble(), strings[2],
-                ZonedDateTime.now().truncateAfterSeconds(), deleteFun)
+                ZonedDateTime.now().truncateAfterSeconds(), onRemoveClick)
             else -> TODO("Implement this")
         }
+    }
+
+    private fun removeListItem(name: String, index: Int) {
+        viewModel.removeFromList(name)
     }
 
     companion object {
