@@ -44,20 +44,12 @@ class ListFragment : Fragment(), Consumer<State> {
 //    @Inject
 //    lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: ListViewModel
-    private val actions = PublishRelay.create<Action>()
     private val adapter = BaseAdapter<ListItem>()
-    private val disp = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initViewModel()
-
-        val obs = actions.compose(viewModel.model())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this)
-        disp.add(obs)
     }
 
     override fun onCreateView(
@@ -71,58 +63,19 @@ class ListFragment : Fragment(), Consumer<State> {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         setUpButtons()
-        startScreen()
-        actions.accept(Action.RetrieveList)
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this)[ListViewModel::class.java]
     }
 
-    override fun accept(state: State?) {
-        when(state) {
-            State.Loading -> loadingScreen()
-
-            State.ListEmpty -> {
-                adapter.submitList(listOf())
-                emptyScreen()
-            }
-
-            is State.ListRetrieved -> {
-                addDeleteFunction(state.items)
-                adapter.submitList(state.items)
-                listScreen()
-            }
-
-            is State.ListFailure -> {
-            }
-        }
-    }
-
-    private fun addDeleteFunction(items: List<ListItem>) {
-        items.forEach {listItem ->
-            if (listItem.deleteFunction == null) {
-                listItem.deleteFunction = {
-                    println("Delete function called")
-                    actions.accept(Action.RemoveItem(listItem)) }
-            }
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
             if (requestCode == NEW_ITEM) {
-                actions.accept(Action.AddItem(mapStringArrayToItem(data!!.getStringArrayExtra("item")!!)))
+                viewModel.addToList(mapStringArrayToItem(data!!.getStringArrayExtra("item")!!))
             }
         }
-    }
-
-    private fun startScreen() {
-        list_recycler.isVisible = false
-        shimmer.isVisible = true
-        add_button.isVisible = false
-        empty_text.isVisible = false
     }
 
     private fun loadingScreen() {

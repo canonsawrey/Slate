@@ -11,12 +11,11 @@ import io.reactivex.Single
 @Dao
 interface DatabaseListItemDao {
     @Query("SELECT * FROM DatabaseListItem")
-    fun getAllItems(): Flowable<List<DatabaseListItem>>
-
+    suspend fun getAllItems(): MutableList<DatabaseListItem>
 
     @Insert
-    fun insert(item: DatabaseListItem): Long
+    suspend fun insert(item: DatabaseListItem): Long
 
     @Query("DELETE FROM DatabaseListItem WHERE item_name=:name")
-    fun remove(name: String)
+    suspend fun remove(name: String)
 }

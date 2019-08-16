@@ -5,68 +5,47 @@ import android.app.Application
 import android.view.View
 import androidx.core.util.Pair
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.slate.util.Util
 import com.example.slate.data.AppDatabase
 import com.example.slate.data.DatabaseListItem
 import com.example.slate.util.exhaustive
 import com.example.slate.util.toBackportZonedDateTime
+import com.example.slate.util.toListItem
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
 class ListViewModel(app: Application): AndroidViewModel(app) {
 
     //var onListItemClick: ((ListItem, Pair<View, String>) -> Unit)? = null
     private val db = AppDatabase.getInstance(app.applicationContext)
+    private var items = MutableLiveData<MutableList<ListItem>>()
 
-    fun model(): ObservableTransformer<Action, State> {
-        return ObservableTransformer { upstream ->
-            upstream.flatMap { action ->
-                when (action) {
-                    is Action.RetrieveList -> getList()
-                    is Action.AddItem -> addToList(action.item)
-                    is Action.RemoveItem -> removeFromList(action.item)
-                }.exhaustive
-            }
+    private fun retrieveDatabaseItems() {
+        viewModelScope.launch {
+            items.value = db.itemDao().getAllItems().map {
+                it.toListItem()
+            }.toMutableList()
         }
     }
 
-    private fun addToList(item: ListItem): Observable<State> {
-        val comp = Completable.fromAction {db.itemDao().insert(Util.listItemToDatabaseListItem(item)) }
-            .subscribeOn(Schedulers.io())
-        return comp.andThen(getList())
+    fun addToList(item: ListItem): Boolean {
+        return items.value?.add(item) == null
     }
 
-    private fun removeFromList(item: ListItem): Observable<State> {
-        val comp = Completable.fromAction {db.itemDao().remove(item.name) }
-            .subscribeOn(Schedulers.io())
-        return comp.andThen(getList())
+    fun removeFromList(index: Int): Boolean {
+        return (items.value?.removeAt(index) != null)
     }
 
-    private fun getList(): Observable<State> {
-        return db.itemDao().getAllItems()
-            .map { list -> list.map(this::mapToListItem) }
-            .map { list ->
-                if (list.isEmpty()) {
-                    State.ListEmpty
-                } else {
-                    State.ListRetrieved(list)
-                }
-            }
-            .subscribeOn(Schedulers.io())
-            .onErrorReturn(State::ListFailure)
-            .toObservable()
-            .startWith(State.Loading)
-    }
-
-    private fun mapToListItem(dbItem: DatabaseListItem): ListItem {
-        return ListItem(
-            dbItem.name,
-            dbItem.quantity,
-            dbItem.quantityUnit,
-            dbItem.created.toBackportZonedDateTime(),
-            null
-        )
+    private fun getList(): List<ListItem> {
+        return if (items.value == null) {
+            listOf()
+        } else {
+            items.value!!
+        }
     }
 }

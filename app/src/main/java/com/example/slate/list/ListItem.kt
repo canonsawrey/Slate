@@ -11,8 +11,7 @@ import java.time.ZonedDateTime
 data class ListItem(val name: String,
                     val quantity: Double?,
                     val quantityUnit: String?,
-                    val created: ZonedDateTime,
-                    var deleteFunction: ((ListItem) -> Unit)?): Item {
+                    val created: ZonedDateTime): Item {
 
     override fun layoutId(): Int = R.layout.list_item
 
@@ -32,7 +31,6 @@ data class ListItem(val name: String,
         }
 
         holder.itemView.remove_container.setOnClickListener {
-            deleteFunction?.invoke(this)
         }
     }
 }

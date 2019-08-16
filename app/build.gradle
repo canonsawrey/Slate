@@ -58,5 +58,5 @@ dependencies {
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1'
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
-
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-beta01'
 }

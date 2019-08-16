@@ -36,7 +36,7 @@
                     android:textColor="@color/colorPrimaryVeryLight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Shopping List Item"
+                    android:text="@string/loading"
                     android:layout_margin="@dimen/list_item_text_margin"/>
 
             <TextView
@@ -48,7 +48,7 @@
                     android:gravity="center_vertical"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:layout_margin="@dimen/list_item_text_margin"
-                    tools:text="@string/loading" />
+                    android:text="@string/loading" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
