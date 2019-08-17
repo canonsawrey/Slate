@@ -22,13 +22,17 @@ class PlanViewModel(app: Application): AndroidViewModel(app) {
 
     private fun changeDate(action: Action.ChangeDate): Observable<State> {
 
-        val date: Date = Date(action.year, action.month, action.day)
-        val obs: Observable<Date> = Observable.just(date)
+        val cal: Calendar = Calendar.getInstance()
+        cal.set(Calendar.YEAR, action.year)
+        cal.set(Calendar.MONTH, action.month)
+        cal.set(Calendar.DAY_OF_MONTH, action.day)
+
+        val obs: Observable<Calendar> = Observable.just(cal)
 
         return obs
-            .map { date ->
+            .map { cal ->
                 if (true) {
-                    State.DateChanged(date)
+                    State.DateChanged(cal)
                 } else {
                     State.InvalidDate
                 }

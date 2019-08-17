@@ -3,10 +3,11 @@
     <color name="colorPrimary">#525564</color>
     <color name="colorPrimaryDull">#74828f</color>
     <color name="colorPrimaryDark">#393b46</color>
-    <color name="colorAccent">#c25b56</color>
+    <color name="colorAccent">#96C0Ce</color>
+    <color name="denyRed">#c25b56</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="colorRed">#FF0000</color>
+    <color name="acceptGreen">#2E8B57</color>
 
     <!--<color name="colorPrimaryBright">#96c0ce</color>-->
     <!--<color name="colorPrimaryDull">#beb9b5</color>-->

@@ -23,5 +23,8 @@
     <string name="twenty_spaces"/>
     <string name="loading">Loading.................................</string>
     <string name="add_item_from_favorites">Add Item From Favorites</string>
+    <string name="b">B</string>
+    <string name="l">L</string>
+    <string name="d">D</string>
 
 </resources>
