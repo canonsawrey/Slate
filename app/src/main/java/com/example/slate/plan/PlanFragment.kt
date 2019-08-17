@@ -18,6 +18,7 @@ import com.example.slate.R
 import com.example.slate.common.list.BaseAdapter
 import com.example.slate.list.ListItem
 import com.example.slate.util.Util
+import com.example.slate.util.addDays
 import com.example.slate.util.toBackportZonedDateTime
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -79,9 +80,11 @@ class PlanFragment : Fragment(), View.OnClickListener, Consumer<State>, DatePick
     }
 
     private fun setupRecycler(days: Int) {
-        var day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        val today = Calendar.getInstance()
         val tiles = mutableListOf<PlanItem>()
-        repeat(days) { tiles.add(PlanItem(day + it)) }
+        repeat(days + 1) {
+            tiles.add(PlanItem(today.addDays(it)))
+        }
         cal_recycler.layoutManager = LinearLayoutManager(requireContext())
         cal_recycler.adapter = adapter
         adapter.submitList(tiles)

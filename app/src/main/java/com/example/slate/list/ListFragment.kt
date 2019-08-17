@@ -62,6 +62,12 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        list_recycler.isVisible = false
+        shimmer.isVisible = true
+        add_button.isVisible = false
+        empty_text.isVisible = false
+
         setUpRecyclerView()
         setUpButtons()
         viewModel.retrieveDatabaseItems()

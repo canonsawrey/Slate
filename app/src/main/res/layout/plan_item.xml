@@ -1,57 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:layout_width="wrap_content"
+                                   android:layout_width="match_parent"
                                    android:layout_height="wrap_content">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_margin="2dp"
             android:background="@drawable/plan_tile_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-        <TextView
+        <androidx.constraintlayout.widget.Guideline
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/guideline"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.4"/>
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:ems="10"
-                android:id="@+id/number"
+                android:id="@+id/date_holder"
                 android:layout_gravity="center"
+                android:orientation="vertical"
                 android:gravity="center"
                 android:layout_margin="8dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/plan_tile_white_background"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:textSize="20sp"
+                    android:id="@+id/day"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/plan_tile_white_background"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:id="@+id/date"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/plan_tile_white_background"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline"/>
+        </LinearLayout>
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:background="@drawable/plan_tile_red_background"
                 android:ems="10"
                 android:id="@+id/breakfast"
                 android:text="@string/b"
                 android:layout_gravity="center"
-                android:gravity="center" android:layout_margin="8dp"/>
+                android:gravity="center"
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintEnd_toStartOf="@id/lunch"/>
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:ems="10"
                 android:background="@drawable/plan_tile_green_background"
                 android:id="@+id/lunch"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/l"
-                android:layout_margin="8dp"/>
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/breakfast"
+                app:layout_constraintEnd_toStartOf="@id/dinner"/>
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:ems="10"
                 android:background="@drawable/plan_tile_green_background"
                 android:text="@string/d"
                 android:id="@+id/dinner"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_margin="8dp"/>
-
-    </LinearLayout>
+                android:layout_margin="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lunch"
+                app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
