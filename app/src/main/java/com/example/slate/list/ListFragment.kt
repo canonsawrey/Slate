@@ -64,7 +64,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         list_recycler.isVisible = false
-        shimmer.isVisible = true
+        loading.isVisible = true
         add_button.isVisible = false
         empty_text.isVisible = false
 
@@ -110,7 +110,7 @@ class ListFragment : Fragment() {
 
     private fun loadingScreen() {
         list_recycler.isVisible = false
-        shimmer.isVisible = true
+        loading.isVisible = true
         add_button.isVisible = false
         empty_text.isVisible = false
     }
@@ -118,15 +118,14 @@ class ListFragment : Fragment() {
     private fun emptyScreen() {
         TransitionManager.beginDelayedTransition(container, Fade(Fade.OUT))
         list_recycler.isVisible = false
-        shimmer.isVisible = false
+        loading.isVisible = false
         add_button.isVisible = true
         empty_text.isVisible = true
     }
 
     private fun listScreen() {
         TransitionManager.beginDelayedTransition(container, Fade(Fade.OUT))
-        shimmer.stopShimmer()
-        shimmer.isVisible = false
+        loading.isVisible = false
         list_recycler.isVisible = true
         add_button.isVisible = true
         empty_text.isVisible = false

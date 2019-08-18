@@ -62,7 +62,6 @@ class PlanFragment : Fragment(), View.OnClickListener, Consumer<State>, DatePick
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         startScreen()
 
         if (pref.contains(DATE_KEY)) {
@@ -72,8 +71,6 @@ class PlanFragment : Fragment(), View.OnClickListener, Consumer<State>, DatePick
             cal.set(Calendar.DAY_OF_MONTH, pref.getInt(DATE_KEY, 0))
 
             dateChanged(cal, false)
-
-            setupRecycler(cal.get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1)
             planScreen()
         }
         change_dates_text.setOnClickListener(this)
@@ -135,6 +132,9 @@ class PlanFragment : Fragment(), View.OnClickListener, Consumer<State>, DatePick
         val month = Util.mapToMonthString(cal.get(Calendar.MONTH) + 1)
         val year = cal.get(Calendar.YEAR)
 
+        setupRecycler(cal.get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+        planScreen()
+
         if (writeToPref) {
             pref.edit().apply {
                 putInt(YEAR_KEY, year)
@@ -142,8 +142,6 @@ class PlanFragment : Fragment(), View.OnClickListener, Consumer<State>, DatePick
                 putInt(DATE_KEY, date)
                 apply()
             }
-            setupRecycler(cal.get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
-            planScreen()
         }
 
         selected_dates_text.text = resources.getString(R.string.formatted_selected_date, day, month, date, year)
